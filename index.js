@@ -79,6 +79,25 @@ app.get('/login', async (req, res) => {
         return res.status(500).send('Server error');
     }
 });
+// Endpoint to send newUser Data to the DataBase
+app.post('/newUser', (req, res) => {
+    const userID = req.body.userID;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const email = req.body.email;
+    const type = req.body.type;
+    const password = req.body.password;
+    const avatar = req.body.avatar;
+    pool.query('INSERT INTO users VALUES(?,?,?,?,?,?,?)',[userID,first_name,last_name,email,type,password,avatar] , (error, results) => {
+        if(error){
+            console.error('Error: ', error);
+            res.status(500).json({Error: 'An error just ocurred!!!'})
+        } else {
+            res.send("Posted")
+        }
+    });
+})
+
 
 //Endpoint to send email to SendGrid API from contact form
 app.post('/emailService', (req, res) => {
